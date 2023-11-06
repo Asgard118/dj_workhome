@@ -4,6 +4,7 @@ from django.db import models
 class Teacher(models.Model):
     name = models.CharField(max_length=30, verbose_name='Имя')
     subject = models.CharField(max_length=10, verbose_name='Предмет')
+    students = models.ManyToManyField('Student', related_name='teachers', verbose_name='Ученики')
 
     class Meta:
         verbose_name = 'Учитель'
@@ -15,7 +16,6 @@ class Teacher(models.Model):
 
 class Student(models.Model):
     name = models.CharField(max_length=30, verbose_name='Имя')
-    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
     group = models.CharField(max_length=10, verbose_name='Класс')
 
     class Meta:
