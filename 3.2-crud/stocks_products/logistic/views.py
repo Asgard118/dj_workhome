@@ -1,16 +1,28 @@
-from rest_framework.viewsets import ModelViewSet
+from rest_framework import viewsets
+from django.db.models import Q
+from .models import Product, Stock
+from .serializers import ProductSerializer, StockSerializer
 
-from logistic.models import Product, Stock
-from logistic.serializers import ProductSerializer, StockSerializer
-
-
-class ProductViewSet(ModelViewSet):
+class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    # при необходимости добавьте параметры фильтрации
 
+    def get_queryset(self):
+        queryset = Product.objects.all()
+        # Добавляем поиск по названию и описанию
+        search_query = self.request.query_params.get('search', None)
+        if search_query:
+            queryset = queryset.filter(Q(title__icontains=search_query) | Q(description__icontains=search_query))
+        return queryset
 
-class StockViewSet(ModelViewSet):
+class StockViewSet(viewsets.ModelViewSet):
     queryset = Stock.objects.all()
     serializer_class = StockSerializer
-    # при необходимости добавьте параметры фильтрации
+
+    def get_queryset(self):
+        queryset = Stock.objects.all()
+        # Добавляем поиск складов по идентификатору продукта
+        product_id = self.request.query_params.get('product_id', None)
+        if product_id:
+            queryset = queryset.filter(positions__product_id=product_id)
+        return queryset
