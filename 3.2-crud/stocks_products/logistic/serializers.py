@@ -7,11 +7,12 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = ['id', 'title', 'description']
 
 class StockProductSerializer(serializers.ModelSerializer):
-    product = serializers.PrimaryKeyRelatedField(queryset=Product.objects.all())
+    product = serializers.PrimaryKeyRelatedField(queryset=Product.objects.all(), source='products')
 
     class Meta:
         model = StockProduct
         fields = ['id', 'product', 'quantity', 'price']
+
 
 class StockSerializer(serializers.ModelSerializer):
     positions = StockProductSerializer(many=True)

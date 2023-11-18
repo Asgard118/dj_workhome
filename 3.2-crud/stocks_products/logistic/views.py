@@ -9,7 +9,6 @@ class ProductViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         queryset = Product.objects.all()
-        # Добавляем поиск по названию и описанию
         search_query = self.request.query_params.get('search', None)
         if search_query:
             queryset = queryset.filter(Q(title__icontains=search_query) | Q(description__icontains=search_query))
@@ -21,8 +20,7 @@ class StockViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         queryset = Stock.objects.all()
-        # Добавляем поиск складов по идентификатору продукта
         product_id = self.request.query_params.get('product_id', None)
         if product_id:
-            queryset = queryset.filter(positions__product_id=product_id)
+            queryset = queryset.filter(positions__product__id=product_id)
         return queryset
