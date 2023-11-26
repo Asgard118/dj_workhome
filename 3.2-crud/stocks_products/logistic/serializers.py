@@ -7,7 +7,6 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = ['id', 'title', 'description']
 
 class StockProductSerializer(serializers.ModelSerializer):
-    product = serializers.PrimaryKeyRelatedField(queryset=Product.objects.all(), source='products')
 
     class Meta:
         model = StockProduct
@@ -26,8 +25,7 @@ class StockSerializer(serializers.ModelSerializer):
         stock = super().create(validated_data)
 
         for position_data in positions_data:
-            product_data = position_data.pop('product')
-            product, _ = Product.objects.get_or_create(**product_data)
+            product = position_data.pop('product')
             StockProduct.objects.create(stock=stock, product=product, **position_data)
 
         return stock
@@ -40,8 +38,7 @@ class StockSerializer(serializers.ModelSerializer):
         instance.positions.all().delete()
 
         for position_data in positions_data:
-            product_data = position_data.pop('product')
-            product, _ = Product.objects.get_or_create(**product_data)
+            product = position_data.pop('product')
             StockProduct.objects.create(stock=stock, product=product, **position_data)
 
         return stock

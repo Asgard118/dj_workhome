@@ -7,8 +7,8 @@ POST {{baseUrl}}/products/
 Content-Type: application/json
 
 {
-  "title": "Дыня",
-  "description": "Лучшие дыни на рынке"
+  "title": "Арбух",
+  "description": "Лучшие дыни на главбух"
 }
 
 ###
@@ -30,7 +30,7 @@ Content-Type: application/json
 ###
 
 # удаление продукта
-DELETE {{baseUrl}}/products/1/
+DELETE {{baseUrl}}/products/2/
 Content-Type: application/json
 
 ###
@@ -49,7 +49,7 @@ Content-Type: application/json
   "address": "набережная орфевр 33",
   "positions": [
     {
-      "product": 2,
+      "product": 4,
       "quantity": 250,
       "price": 120.50
     },
@@ -70,7 +70,7 @@ Content-Type: application/json
 {
   "positions": [
     {
-      "product": 2,
+      "product": 4,
       "quantity": 100,
       "price": 130.80
     },
@@ -85,5 +85,5 @@ Content-Type: application/json
 ###
 
 # поиск складов, где есть определенный продукт
-GET {{baseUrl}}/stocks/?products=2
+GET {{baseUrl}}/stocks/?products=3
 Content-Type: application/json
