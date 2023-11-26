@@ -8,8 +8,8 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
 
     def has_object_permission(self, request, obj):
         # Разрешено для чтения всем
-        if request.method in permissions.SAFE_METHODS:
+        if request.method == GET:
             return True
 
-        # Разрешено только для владельца объявления
-        return obj.creator == request.user
+        # Разрешено только для владельца объявления или администратора
+        return obj.creator == request.user or request.user.is_staff
